@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>가계부</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='4' width='26' height='24' rx='5' fill='%231F3A5F'/%3E%3Crect x='8' y='11' width='16' height='2.5' rx='1.2' fill='%23fff'/%3E%3Crect x='8' y='17' width='10' height='2.5' rx='1.2' fill='%23fff' opacity='.6'/%3E%3C/svg%3E">
+  <!-- Pretendard: 불러오지 못하면 시스템 한글 글꼴로 표시 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 저장된 테마를 화면이 그려지기 전에 적용 (깜빡임 방지)
+    try {
+      var t = JSON.parse(localStorage.getItem('household-ledger') || '{}');
+      var theme = t && t.settings && t.settings.theme;
+      if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#view">본문으로 건너뛰기</a>
+  <div class="app">
+    <nav class="nav" aria-label="주요 메뉴">
+      <p class="nav-brand" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28"><rect x="3" y="4" width="26" height="24" rx="5" fill="currentColor"/><rect x="8" y="11" width="16" height="2.5" rx="1.2" fill="var(--hero-text)"/><rect x="8" y="17" width="10" height="2.5" rx="1.2" fill="var(--hero-text)" opacity=".6"/></svg>
+        가계부
+      </p>
+      <a class="tab" href="#home" data-route="home">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></a>
+      <a class="tab" href="#list" data-route="list">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-3-2-2 2-2-2-2 2-2-2-3 2V4a1 1 0 0 1 1-1zM9 8h6M9 12h6M9 16h3"/></svg><span>내역</span></a>
+      <a class="tab" href="#stats" data-route="stats">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V6M17 16v-7"/></svg><span>통계</span></a>
+      <a class="tab" href="#budget" data-route="budget">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 7l3-3h12l3 3M15 13.5h3"/></svg><span>예산</span></a>
+      <a class="tab" href="#recurring" data-route="recurring">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v5M16 3v5M9 15l2 2 4-4"/></svg><span>정기납부</span></a>
+      <a class="tab" href="#stocks" data-route="stocks">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7M14 7h4v4"/></svg><span>주식</span></a>
+      <a class="tab" href="#settings" data-route="settings">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4.5v5M8 14.5v5"/></svg><span>설정</span></a>
+    </nav>
+
+    <div class="main">
+      <!-- 저장 실패 등 전역 안내 -->
+      <div id="app-alert" class="app-alert" role="alert" hidden></div>
+      <main id="view" class="view" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  <div id="chart-tip" class="chart-tip" role="tooltip" hidden></div>
+
+  <!-- file:// 에서도 동작하도록 ES 모듈 대신 일반 스크립트를 순서대로 불러온다 -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/classifier.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/recurring.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/budget.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/stocks.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/views/home.js"></script>
+  <script src="js/views/list.js"></script>
+  <script src="js/views/stats.js"></script>
+  <script src="js/views/budget.js"></script>
+  <script src="js/views/recurring.js"></script>
+  <script src="js/views/stocks.js"></script>
+  <script src="js/views/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
